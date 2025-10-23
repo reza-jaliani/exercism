@@ -28,7 +28,7 @@ main () {
                 ;;
         esac
     done
-    echo $output
+    echo "$output"
 }
 
 main "$@"
