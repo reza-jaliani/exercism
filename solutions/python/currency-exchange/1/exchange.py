@@ -15,7 +15,7 @@ def exchange_money(budget, exchange_rate):
     :return: float - exchanged value of the foreign currency you can receive.
     """
 
-    return budget / exchange_rate
+    return(budget / exchange_rate)
 
 
 def get_change(budget, exchanging_value):
@@ -26,7 +26,7 @@ def get_change(budget, exchanging_value):
     :return: float - amount left of your starting currency after exchanging.
     """
 
-    return budget - exchanging_value
+    return(budget - exchanging_value)
 
 
 def get_value_of_bills(denomination, number_of_bills):
@@ -37,7 +37,7 @@ def get_value_of_bills(denomination, number_of_bills):
     :return: int - calculated value of the bills.
     """
 
-    return denomination * number_of_bills
+    return(denomination * number_of_bills)
 
 
 def get_number_of_bills(amount, denomination):
@@ -48,7 +48,7 @@ def get_number_of_bills(amount, denomination):
     :return: int - number of bills that can be obtained from the amount.
     """
 
-    return amount // denomination
+    return (amount // denomination)
 
 
 def get_leftover_of_bills(amount, denomination):
@@ -59,7 +59,7 @@ def get_leftover_of_bills(amount, denomination):
     :return: float - the amount that is "leftover", given the current denomination.
     """
 
-    return amount % denomination
+    return(amount % denomination)
 
 
 def exchangeable_value(budget, exchange_rate, spread, denomination):
@@ -71,17 +71,7 @@ def exchangeable_value(budget, exchange_rate, spread, denomination):
     :param denomination: int - the value of a single bill.
     :return: int - maximum value you can get.
     """
-
-    # convert spread to decimal
-    spread_decimal = spread / 100
-    
-    # calculate the actual exchange rate including spread
-    final_rate = exchange_rate * (1 + spread_decimal)
-
-    foreign_amount = exchange_money(budget, final_rate)
-
-    # number of whole denominations
-    units = int(foreign_amount // denomination)
-    
-    # total exchangeable value
-    return units * denomination
+    effective_rate = exchange_rate * (1 + spread / 100)
+    exchanged = budget / effective_rate
+    bills = int(exchanged // denomination)
+    return bills * denomination
