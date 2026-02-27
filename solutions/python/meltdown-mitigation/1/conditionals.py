@@ -14,12 +14,12 @@ def is_criticality_balanced(temperature, neutrons_emitted):
     - The product of temperature and neutrons emitted per second is less than 500000.
     """
 
-    return (
-        temperature < 800
-        and neutrons_emitted > 500
-        and temperature * neutrons_emitted < 500000
-    )
-
+    criticality_balance = False
+    product = temperature * neutrons_emitted
+    if (temperature < 800 and neutrons_emitted > 500 and product < 500000):
+        criticality_balance = True
+    return criticality_balance
+        
 
 def reactor_efficiency(voltage, current, theoretical_max_power):
     """Assess reactor efficiency zone.
@@ -42,16 +42,16 @@ def reactor_efficiency(voltage, current, theoretical_max_power):
     """
 
     generated_power = voltage * current
-    efficiency = (generated_power / theoretical_max_power) * 100
-
-    if efficiency >= 80:
-        return "green"
-    elif efficiency >= 60:
-        return "orange"
-    elif efficiency >= 30:
-        return "red"
-    else:
-        return "black"
+    percentage = generated_power / theoretical_max_power * 100
+    efficiency_color = 'green'
+    if percentage < 80:
+        efficiency_color = 'orange'
+    if percentage < 60:
+        efficiency_color = 'red'
+    if percentage < 30:
+        efficiency_color = 'black'
+    return efficiency_color
+        
 
 def fail_safe(temperature, neutrons_produced_per_second, threshold):
     """Assess and return status code for the reactor.
@@ -66,13 +66,14 @@ def fail_safe(temperature, neutrons_produced_per_second, threshold):
     3. 'DANGER' -> `temperature * neutrons per second` is not in the above-stated ranges
     """
 
-    product = temperature * neutrons_produced_per_second
-    lower_bound = threshold * 0.9
-    upper_bound = threshold * 1.1
-
-    if product < lower_bound:
-        return "LOW"
-    elif lower_bound <= product <= upper_bound:
-        return "NORMAL"
-    else:
-        return "DANGER"
+    situation = temperature * neutrons_produced_per_second
+    criticality = 'NORMAL'
+    if situation > (threshold * 1.1):
+        criticality = 'DANGER'
+    if situation < (threshold * 0.9):
+        criticality = 'LOW'
+    return criticality
+        
+    
+        
+    
